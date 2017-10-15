@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView mImage = (ImageView) findViewById(R.id.imageView) ;
+
+        //将焦距改到image上，使学号输入框先正常显示
+        mImage.setFocusable(true);
+        mImage.setFocusableInTouchMode(true);
+        mImage.requestFocus();
+        mImage.requestFocusFromTouch();
+
+        //image的点击事件
         mImage.setOnClickListener(new View.OnClickListener(){
             final String[] items = new String[] { "拍摄", "从相册选择" };
             @Override
@@ -49,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
         final RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        //单选按钮改变监测器
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -86,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         final TextInputLayout mPassText =(TextInputLayout)findViewById(R.id.Textip_PW);
         final EditText mNumberEdit = mNumberText.getEditText();
         final EditText mPassEdit = mPassText.getEditText();
+
+        //检测输入框是否改变，当从空白变成有输入时，TextInputLayout的空白提醒应该立即取消，而不是等到再按一次登录按钮
         mNumberEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {}
@@ -119,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //登录按钮，主要是字符串的获取与比较
         Button Login=(Button) findViewById(R.id.login);
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //注册按钮，主要是要获取radioGroup被选择的是学生还是教职工，getCheckedRadioButtonId（）
         Button Signup=(Button)findViewById(R.id.sigup);
         Signup.setOnClickListener(new View.OnClickListener() {
             @Override
