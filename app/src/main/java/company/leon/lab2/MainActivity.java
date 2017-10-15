@@ -7,6 +7,8 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-        RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        final RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -84,22 +86,49 @@ public class MainActivity extends AppCompatActivity {
         final TextInputLayout mPassText =(TextInputLayout)findViewById(R.id.Textip_PW);
         final EditText mNumberEdit = mNumberText.getEditText();
         final EditText mPassEdit = mPassText.getEditText();
+        mNumberEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {}
 
+            @Override
+            public void beforeTextChanged(CharSequence text, int start, int count,int after) {}
+
+            @Override
+            public void afterTextChanged(Editable edit) {
+                if(mNumberEdit.getText().toString().equals(""))
+                {
+                    mNumberText.setErrorEnabled(true);
+                }
+                else mNumberText.setErrorEnabled(false);
+            }
+        });
+        mPassEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence text, int start, int count,int after) {}
+
+            @Override
+            public void afterTextChanged(Editable edit) {
+                if(mPassEdit.getText().toString().equals(""))
+                {
+                    mPassText.setErrorEnabled(true);
+                }
+                else mPassText.setErrorEnabled(false);
+            }
+        });
 
         Button Login=(Button) findViewById(R.id.login);
-        Button Signup=(Button)findViewById(R.id.sigup);
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mNumberEdit.getText().toString().equals(""))
                 {
-                    mNumberText.setErrorEnabled(true);
                     mNumberText.setError("学号不能为空");
                 }
                 else if(mPassEdit.getText().toString().equals(""))
                 {
-                    mNumberText.setErrorEnabled(false);
-                    mPassText.setErrorEnabled(true);
                     mPassText.setError("密码不能为空");
                 }
                 else if(mNumberEdit.getText().toString().equals("123456")&&mPassEdit.getText().toString().equals("6666"))
@@ -113,8 +142,6 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setActionTextColor(getResources().getColor(R.color.colorPrimary))
                             .show();
-                    mNumberText.setErrorEnabled(false);
-                    mPassText.setErrorEnabled(false);
                 }
                 else
                 {
@@ -127,10 +154,37 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setActionTextColor(getResources().getColor(R.color.colorPrimary))
                             .show();
-                    mNumberText.setErrorEnabled(false);
-                    mPassText.setErrorEnabled(false);
+                }
+            }
+        });
+        Button Signup=(Button)findViewById(R.id.sigup);
+        Signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRadioGroup.getCheckedRadioButtonId() == R.id.radioButton_student) {
+                    Snackbar.make(findViewById(R.id.radioGroup), "学生注册功能尚未启用", Snackbar.LENGTH_SHORT)
+                            .setAction("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(getApplicationContext(), "Snackbar的确定按钮被点击了", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(R.color.colorPrimary))
+                            .show();
+
+                } else {
+                    Snackbar.make(findViewById(R.id.radioGroup), "教职工学生注册功能尚未启用", Snackbar.LENGTH_SHORT)
+                            .setAction("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(getApplicationContext(), "Snackbar的确定按钮被点击了", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(R.color.colorPrimary))
+                            .show();
                 }
             }
         });
     }
 }
+
